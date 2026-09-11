@@ -1,306 +1,179 @@
-# CareerCompass 🎯
+# CareerCompass
 
-> 🛡️ **Made by stealthcoderX** | All rights reserved.
+A career-path quiz: 15 questions scored across five career tracks, with user accounts, saved results and a one-command Docker setup. Built with Flask, MySQL and Docker.
 
-**An AI-powered career prediction quiz application** that helps users discover their ideal career path through an intelligent 15-question assessment.
+![Python](https://img.shields.io/badge/Python_3.11-3776AB?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask_3.0-000000?style=flat-square&logo=flask&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL_8-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker_Compose-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=flat-square&logo=gunicorn&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
-Built with **Flask**, **MySQL**, and **Docker** for easy deployment.
+## Features
 
----
+- **Career matching:** 15 questions on personality, skills and interests. Each answer adds points to one or more career tracks, and the highest-scoring track is the recommendation.
+- **Interactive quiz:** animated interface with keyboard navigation
+- **Results breakdown:** a percentage for each of the five tracks
+- **Accounts:** registration and login with Werkzeug password hashing and Flask-Login sessions
+- **Persistence:** results saved to MySQL
+- **Containerised:** Docker Compose runs the app and database together; Gunicorn serves the app, configuration comes from the environment, and `/health` reports status
+- **Responsive:** works on desktop, tablet and mobile
 
-## ✨ Features
+### Career tracks
 
-- 🎯 **Smart Career Matching** - 15 carefully crafted questions covering personality, skills, and interests
-- 📊 **Interactive Quiz** - Smooth, animated quiz interface with keyboard navigation
-- 📈 **Detailed Results** - Visual score breakdown across 5 career categories
-- 🔐 **User Accounts** - Secure registration and login with password hashing
-- 💾 **Data Persistence** - Quiz results saved to MySQL database
-- 🐳 **Docker Ready** - One-command setup with Docker Compose
-- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
-- 🚀 **Production Ready** - Gunicorn server, environment-based config, health checks
----
+Software Engineer · Data Scientist · UX/UI Designer · Product Manager · Cybersecurity Specialist
 
-## 🏗️ Project Structure
+Each track can score up to 45 points across the 15 questions; results are shown as percentages, capped at 99%.
 
-```
-CareerCompass/
-│
-├── 📁 frontend/                          # User Interface
-│   ├── templates/                        # Jinja2 HTML templates
-│   │   ├── base.html                     # Base template layout
-│   │   ├── auth_base.html                # Auth pages layout
-│   │   ├── index.html                    # Landing page
-│   │   ├── register.html                 # Registration form
-│   │   ├── login.html                    # Login form
-│   │   ├── quiz.html                     # Quiz interface
-│   │   ├── result.html                   # Results dashboard
-│   │   └── error.html                    # Error pages
-│   │
-│   └── static/                           # Static Assets
-│       ├── css/main.css                  # Global styling
-│       └── js/
-│           ├── main.js                   # Global utilities
-│           ├── auth.js                   # Form validation
-│           └── quiz.js                   # Quiz logic
-│
-├── 📁 backend/                           # Server Logic
-│   ├── app.py                            # Flask app factory, routes, models
-│   ├── config.py                         # Environment configuration
-│   ├── questions.py                      # Quiz questions & scoring engine
-│   ├── requirements.txt                  # Python dependencies
-│   ├── Dockerfile                        # Docker image definition
-│   ├── entrypoint.sh                     # Startup script
-│   └── .dockerignore                     # Docker ignore patterns
-│
-├── 📁 database/                          # Data Layer
-│   └── init.sql                          # MySQL schema & initialization
-│
-├── 📄 docker-compose.yml                 # Container orchestration
-├── 📄 .env                               # Environment variables
-├── 📄 .env.example                       # Environment template
-├── 📄 .gitignore                         # Git ignore patterns
-├── 📄 README.md                          # This file
-├── 📄 QUICKSTART.md                      # Quick start guide
-├── 📄 DOCKER_SETUP.md                    # Docker detailed guide
-└── 📄 STRUCTURE.md                       # Detailed structure documentation
+## Architecture
+
+```mermaid
+flowchart LR
+    B["Browser"] --> G["Gunicorn + Flask<br/>backend/app.py"]
+    G --> T["Jinja2 templates<br/>frontend/templates"]
+    G --> DB[("MySQL 8")]
 ```
 
----
+## Quick start
 
-## 🚀 Quick Start (3 Steps)
+**Prerequisite:** Docker Desktop, or Docker Engine with the Compose plugin.
 
-### **Prerequisites**
-- ✅ [Docker Desktop](https://www.docker.com/products/docker-desktop) installed and running
-
-### **Step 1: Navigate to Project**
 ```bash
-cd "path/to/CareerCompass"
-```
-
-### **Step 2: Start the App**
-```bash
+cp .env.example .env      # then set SECRET_KEY and the database passwords
 docker compose up --build
 ```
 
-### **Step 3: Open Browser**
-**http://localhost:5000** ✅
+Open http://localhost:5000.
 
----
+## Routes
 
-## 🌐 Available Routes
+| URL | Purpose | Sign-in required |
+|---|---|---|
+| `/` | Landing page | No |
+| `/register` | Create an account | No |
+| `/login` | Sign in | No |
+| `/quiz` | Take the quiz | Yes |
+| `/result` | View results | Yes |
+| `/logout` | Sign out | Yes |
+| `/health` | Health check (JSON) | No |
 
-| URL | Purpose | Auth |
-|-----|---------|------|
-| `/` | Landing page | ❌ |
-| `/register` | Create account | ❌ |
-| `/login` | Sign in | ❌ |
-| `/quiz` | Take quiz | ✅ |
-| `/result` | View results | ✅ |
-| `/logout` | Sign out | ✅ |
-| `/health` | Health check (JSON) | ❌ |
-
----
-
-## 🛠️ Technology Stack
+## Tech stack
 
 | Layer | Technology |
-|-------|-----------|
-| **Frontend** | HTML5, CSS3, Vanilla JavaScript |
-| **Backend** | Python 3.11, Flask 3.0.3 |
-| **Database** | MySQL 8.0.45 |
-| **Server** | Gunicorn 22.0.0 |
-| **Container** | Docker & Docker Compose |
-| **ORM** | SQLAlchemy 3.1.1 |
+|---|---|
+| Frontend | HTML5, CSS3, vanilla JavaScript, Jinja2 |
+| Backend | Python 3.11, Flask 3.0.3, Flask-Login |
+| ORM | Flask-SQLAlchemy 3.1.1 |
+| Database | MySQL 8.0 |
+| Server | Gunicorn 22.0.0 |
+| Containers | Docker, Docker Compose |
+| Deployment | GitHub Actions to AWS EC2 |
 
----
+## Configuration
 
-## 📦 Installation
+All settings come from `.env` (template: `.env.example`):
 
-### **With Docker** (Recommended)
+| Variable | Purpose |
+|---|---|
+| `FLASK_ENV`, `APP_ENV` | `development` or `production` |
+| `SECRET_KEY` | Session signing key; use 32 or more random bytes |
+| `MYSQL_ROOT_PASSWORD` | MySQL root password for the database container |
+| `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` | Application database connection |
+| `GUNICORN_WORKERS`, `GUNICORN_TIMEOUT` | Gunicorn tuning |
+| `PORT` | Port the app listens on |
 
-```bash
-docker compose up --build
-# Visit http://localhost:5000
-```
+Never commit `.env`: it holds your secret key and database passwords.
 
-### **Local Development** (requires MySQL)
+## Local development without Docker
+
+Requires a running MySQL server.
 
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 export FLASK_APP=app.py FLASK_ENV=development
 python app.py
 ```
 
----
+## Database access
 
-## 🗄️ Database Connection
-
-### **MySQL Workbench Connection**
-
-| Field | Value |
-|-------|-------|
-| **Hostname** | `localhost` |
-| **Port** | `3307` |
-| **Username** | `career_user` |
-| **Password** | `career_pass` |
-| **Database** | `career_quiz` |
-
-### **Docker Command Line**
+The MySQL container is published on host port `3307`, for tools such as MySQL Workbench.
 
 ```bash
-docker exec -it careercompass-db mysql -u career_user -p -D career_quiz
-# Password: career_pass
+docker exec -it careercompass-db mysql -u <DB_USER> -p -D <DB_NAME>
 ```
-
-### **View Users**
 
 ```sql
 SELECT id, name, email, predicted_career, created_at FROM users;
 ```
 
----
-
-## 🧠 Quiz System
-
-### **5 Career Categories**
-
-1. 💻 **Software Engineer** - Logic, coding, systems
-2. 📊 **Data Scientist** - Analytics, statistics
-3. 🎨 **UX/UI Designer** - Creativity, design
-4. 📈 **Product Manager** - Strategy, business
-5. 🛡️ **Cybersecurity Specialist** - Security, protection
-
-### **Scoring**
-
-- 15 questions
-- Max 45 points per category
-- Results: 0-100% (capped at 99%)
-- Top category = primary match
-
----
-
-## 🔧 Environment Configuration
-
-### **.env File**
-
-```env
-FLASK_ENV=development
-APP_ENV=development
-SECRET_KEY=your-secret-key
-MYSQL_ROOT_PASSWORD=rootpassword
-DB_HOST=db
-DB_PORT=3306
-DB_NAME=career_quiz
-DB_USER=career_user
-DB_PASSWORD=career_pass
-GUNICORN_WORKERS=4
-GUNICORN_TIMEOUT=120
-PORT=5000
-```
-
-⚠️ **Never commit `.env`** - contains passwords!
-
----
-
-## 🐳 Docker Commands
+## Docker commands
 
 ```bash
-# Start application
-docker compose up
-
-# Rebuild and start
-docker compose up --build
-
-# Stop containers
-docker compose down
-
-# Delete database volume
-docker compose down -v
-
-# View logs
-docker compose logs -f
-
-# Execute command in container
+docker compose up --build     # rebuild and start
+docker compose logs -f        # follow logs
+docker compose down           # stop
+docker compose down -v        # stop and delete the database volume
 docker exec -it careercompass-web bash
 ```
 
----
+## Troubleshooting
 
-## 📚 Additional Guides
+| Problem | Fix |
+|---|---|
+| Port 5000 already in use | Change the mapping in `docker-compose.yml` to `"8000:5000"` and open http://localhost:8000 |
+| Database connection failed | `docker compose down -v && docker compose up --build` resets the stack |
+| MySQL container exited | Check `docker compose logs db` |
 
-| Document | Details |
-|----------|---------|
-| [QUICKSTART.md](QUICKSTART.md) | 3-step startup |
-| [DOCKER_SETUP.md](DOCKER_SETUP.md) | Docker detailed guide |
-| [STRUCTURE.md](STRUCTURE.md) | File structure details |
+## Deployment
 
----
+`.github/workflows/deploy.yml` runs on every push to `main`. It connects to an EC2 host over SSH, syncs the `stealthcoderX/fullstack-careercompass` repository into `/home/ubuntu/careercompass`, and rebuilds the containers with Docker Compose.
 
-## 🛠️ Troubleshooting
+Repository secrets: `EC2_HOST` and `EC2_SSH_KEY`.
 
-### **Port 5000 already in use**
-```yaml
-# Change in docker-compose.yml:
-ports:
-  - "8000:5000"
-# Then visit http://localhost:8000
-```
+> The workflow stops the stack with `docker compose down -v`, which also deletes the MySQL volume, so each deploy starts with an empty database. Remove `-v` to keep data between deploys.
 
-### **Docker not found**
-- Docker Desktop not running → Start it from Applications
+### Production checklist
 
-### **Database connection failed**
-```bash
-# Reset everything
-docker compose down -v
-docker compose up --build
-```
-
-### **MySQL container exited**
-```bash
-docker compose logs db
-```
-
----
-
-## 🚀 Deployment Checklist
-
-- [ ] Strong `SECRET_KEY` (32+ bytes)
-- [ ] Strong `DB_PASSWORD`
+- [ ] Strong, random `SECRET_KEY` (32+ bytes)
+- [ ] Strong database passwords
 - [ ] `APP_ENV=production`
-- [ ] HTTPS/SSL configured
-- [ ] Database backups enabled
-- [ ] Gunicorn workers set to `2 * CPU_COUNT + 1`
+- [ ] HTTPS in front of the app
+- [ ] Database backups
+- [ ] `GUNICORN_WORKERS` set to about `2 × CPU cores + 1`
+
+## Project structure
+
+```text
+career-compass/
+├── frontend/
+│   ├── templates/          base, auth_base, index, register, login, quiz, result, error
+│   └── static/
+│       ├── css/main.css
+│       └── js/             main.js, auth.js (form validation), quiz.js
+├── backend/
+│   ├── app.py              Flask app factory, routes and models
+│   ├── config.py           Environment configuration
+│   ├── questions.py        Questions and scoring engine
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── entrypoint.sh
+├── database/init.sql       MySQL schema
+├── docker-compose.yml
+├── .env.example
+├── QUICKSTART.md           Three-step start
+├── DOCKER_SETUP.md         Detailed Docker guide
+└── STRUCTURE.md            File-by-file reference
+```
+
+## License
+
+© 2025 Rajan Kumar (stealthcoderX). All rights reserved. Copying, modification or distribution without permission is prohibited.
 
 ---
 
-## 💡 Key Features Explained
-
-### **Smart Matching Algorithm**
-Each quiz answer awards points to different careers. The algorithm accumulates scores and identifies the best match.
-
-### **Secure Authentication**
-Passwords hashed using Werkzeug security. Session-based login with Flask-Login.
-
-### **Responsive UI**
-Mobile-first design with CSS animations. Works on all devices.
-
-### **Docker Containerization**
-Entire app runs in isolated containers. Portable, scalable, production-ready.
-
----
-
-## 📄 License & Copyright
-
-**© 2025 stealthcoderX. All rights reserved.**
-
-This project is protected by copyright law. Unauthorized copying, modification, or distribution is prohibited.
-
-For inquiries or licensing, please contact stealthcoderX.
-
----
-
-**Happy career discovery!** 🚀
+<div align="center">
+  <sub>Maintained by <a href="https://github.com/RajGenStack">Rajan Kumar</a> · <a href="https://www.linkedin.com/in/rajan-kumar42">LinkedIn</a></sub>
+</div>
