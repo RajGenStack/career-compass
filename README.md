@@ -9,6 +9,18 @@ A career-path quiz: 15 questions scored across five career tracks, with user acc
 ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=flat-square&logo=gunicorn&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 
+<p>
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/RajGenStack/career-compass?style=flat-square&labelColor=0d1117&color=ff6b35">
+  <img alt="Top language" src="https://img.shields.io/github/languages/top/RajGenStack/career-compass?style=flat-square&labelColor=0d1117&color=8b949e">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/RajGenStack/career-compass?style=flat-square&labelColor=0d1117&color=8b949e">
+</p>
+
+## What this demonstrates
+
+- An application and its database defined together as containers, served by a production WSGI server with a health endpoint
+- Session authentication with hashed passwords rather than credentials in plain text
+- Deployment driven from CI over SSH, with configuration supplied by the environment
+
 ## Features
 
 - **Career matching:** 15 questions on personality, skills and interests. Each answer adds points to one or more career tracks, and the highest-scoring track is the recommendation.
